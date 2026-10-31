@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B-Ling</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+    padding: 20px;
+      background: #eaf6ff;
+        color: #244765;
+          font-family: Arial, sans-serif;
+          }
+.app {
+  max-width: 480px;
+    margin: auto;
+    }
+header {
+  display: flex;
+    justify-content: space-between;
+      align-items: center;
+      }
+.logo {
+  font-size: 28px;
+    font-weight: bold;
+      color: #328bc5;
+      }
+.stats {
+  display: flex;
+    gap: 8px;
+    }
+.stat {
+  background: white;
+    padding: 10px;
+      border-radius: 13px;
+      }
+.welcome {
+  background: #cceaff;
+    padding: 23px;
+      border-radius: 22px;
+        margin-top: 25px;
+        }
+h1 { margin-top: 0; }
+
+select, button {
+  width: 100%;
+    padding: 14px;
+      border: 0;
+        border-radius: 13px;
+          font-size: 16px;
+          }
+select {
+  background: white;
+    color: #244765;
+    }
+.lesson {
+  background: white;
+    padding: 19px;
+      margin: 15px 0;
+        border-radius: 18px;
+          box-shadow: 0 3px 12px #b9d9ed55;
+          }
+.lesson h3 { margin-top: 0; }
+
+button {
+  background: #55a9e2;
+    color: white;
+      font-weight: bold;
+        cursor: pointer;
+        }
+button:active { opacity: 0.75; }
+
+#message {
+  display: none;
+    background: white;
+      padding: 20px;
+        margin-top: 20px;
+          border-radius: 18px;
+          }
+#answer {
+  color: #328bc5;
+    font-weight: bold;
+    }
+.secondary {
+  background: #cceaff;
+    color: #244765;
+      margin-top: 12px;
+      }
+.footer {
+  text-align: center;
+    color: #6793b2;
+      margin: 28px 0;
+      }
+      </style>
+      </head>
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">💧 B-Ling</div>
+    <div class="stats">
+        <div class="stat">⭐ <span id="xp">0</span></div>
+            <div class="stat">❤️ 5</div>
+              </div>
+              </header>
+<section class="welcome">
+  <h1>Welcome to B-Ling!</h1>
+    <p>Your little world of languages. Learn something new every day!</p>
+      <p><b>Choose your language:</b></p>
+  <select id="language">
+      <option value="Indonesian">🇮🇩 Indonesian</option>
+          <option value="Spanish">🇪🇸 Spanish</option>
+              <option value="Japanese">🇯🇵 Japanese</option>
+                  <option value="Chinese">🇨🇳 Chinese</option>
+                    </select>
+                    </section>
+<h2>📚 Your learning path</h2>
+
+<div class="lesson">
+  <h3>🌱 Lesson 1: First Words</h3>
+    <p>Learn simple greetings and introductions.</p>
+      <button class="start" data-lesson="0">Start lesson</button>
+      </div>
+<div class="lesson">
+  <h3>🌼 Lesson 2: Everyday Words</h3>
+    <p>Discover useful daily vocabulary.</p>
+      <button class="start" data-lesson="1">Start lesson</button>
+      </div>
+<div class="lesson">
+  <h3>🌷 Lesson 3: Simple Sentences</h3>
+    <p>Practice making your first sentences.</p>
+      <button class="start" data-lesson="2">Start lesson</button>
+      </div>
+<section id="message">
+  <h2 id="lessonTitle">💙 Practice</h2>
+    <p id="instruction"></p>
+      <h2 id="question"></h2>
+        <button id="showAnswer">Show answer</button>
+          <p id="answer"></p>
+            <button id="complete" class="secondary">Complete lesson</button>
+            </section>
+<div class="footer">
+  B-Ling • Learn at your own pace 💙
+  </div>
+</div>
+
+<script>
+const vocabulary = {
+  Indonesian: [
+      ["Hello", "Halo"],
+          ["Thank you", "Terima kasih"],
+              ["How are you?", "Apa kabar?"]
+                ],
+                  Spanish: [
+                      ["Hello", "Hola"],
+                          ["Thank you", "Gracias"],
+                              ["How are you?", "¿Cómo estás?"]
+                                ],
+                                  Japanese: [
+                                      ["Hello", "こんにちは"],
+                                          ["Thank you", "ありがとう"],
+                                              ["How are you?", "元気ですか？"]
+                                                ],
+                                                  Chinese: [
+                                                      ["Hello", "你好"],
+                                                          ["Thank you", "谢谢"],
+                                                              ["How are you?", "你好吗？"]
+                                                                ]
+                                                                };
+let xp = 0;
+let currentAnswer = "";
+let currentLesson = 0;
+
+const message = document.getElementById("message");
+const language = document.getElementById("language");
+
+document.querySelectorAll(".start").forEach(button => {
+  button.addEventListener("click", () => {
+      currentLesson = Number(button.dataset.lesson);
+          const selectedLanguage = language.value;
+              const word = vocabulary[selectedLanguage][currentLesson];
+    currentAnswer = word[1];
+    document.getElementById("lessonTitle").textContent =
+          "💙 " + selectedLanguage + " Practice";
+    document.getElementById("instruction").textContent =
+          "Translate this into " + selectedLanguage + ":";
+    document.getElementById("question").textContent = word[0];
+        document.getElementById("answer").textContent = "";
+            message.style.display = "block";
+    message.scrollIntoView({ behavior: "smooth" });
+      });
+      });
+document.getElementById("showAnswer").addEventListener("click", () => {
+  document.getElementById("answer").textContent =
+      "Answer: " + currentAnswer;
+      });
+document.getElementById("complete").addEventListener("click", () => {
+  xp += 10;
+    document.getElementById("xp").textContent = xp;
+  document.getElementById("lessonTitle").textContent =
+      "🎉 Great job!";
+  document.getElementById("instruction").textContent =
+      "You completed the lesson and earned 10 XP!";
+  document.getElementById("question").textContent = "Keep learning!";
+  document.getElementById("answer").textContent = "";
+  });
+  </script>
+</body>
+  </html>
+  
